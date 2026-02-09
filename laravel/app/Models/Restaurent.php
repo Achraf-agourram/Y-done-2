@@ -13,9 +13,9 @@ class Restaurent extends Model
         'restaurentName',
         'location',
         'capacity',
-        'openingTime',
-        'closingTime',
         'isActive',
+        'removed',
+        'remaining',
     ];
 
     public function owner()
@@ -36,5 +36,20 @@ class Restaurent extends Model
     public function menu()
     {
         return $this->hasOne(Menu::class);
+    }
+
+    public function schedule()
+    {
+        return $this->hasOne(Schedule::class);
+    }
+
+    public function notification()
+    {
+        return $this->hasMany(Notification::class);
+    }
+
+    public function bookings()
+    {
+        return $this->belongsToMany(User::class, 'bookings');
     }
 }
