@@ -50,6 +50,6 @@ class Restaurent extends Model
 
     public function bookings()
     {
-        return $this->belongsToMany(User::class, 'bookings');
+        return $this->belongsToMany(Booking::class);
     }
 }
