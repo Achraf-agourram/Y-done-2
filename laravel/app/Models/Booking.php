@@ -20,4 +20,9 @@ class Booking extends Model
     {
         return $this->belongsTo(Restaurent::class);
     }
+
+    public function notification()
+    {
+        return $this->hasOne(Notification::class);
+    }
 }
