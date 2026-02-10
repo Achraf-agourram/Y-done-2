@@ -19,7 +19,7 @@ class BookingFactory extends Factory
         $start = $this->faker->numberBetween(12, 20);
 
         return [
-            'bookingDay' => $this->faker->date(),
+            'bookingDay' => now()->toDateString(),
             'tables' => $this->faker->numberBetween(1, 2),
             'startHour' => sprintf('%02d:00', $start),
             'endHour' => sprintf('%02d:00', $start + 2),
