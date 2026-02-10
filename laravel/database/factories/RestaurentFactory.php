@@ -17,13 +17,15 @@ class RestaurentFactory extends Factory
      */
     public function definition(): array
     {
+        $capacity = $this->faker->numberBetween(10, 20);
+        
         return [
             'restaurentName' => $this->faker->company,
             'location' => $this->faker->address,
-            'capacity' => $this->faker->numberBetween(1, 6),
-            'openingTime' => $this->faker->time('H:i'),
-            'closingTime' => $this->faker->time('H:i'),
+            'capacity' => $capacity,
+            'remaining' => $capacity,
             'isActive' => true,
+            'removed' => false,
             'owner_id' => null,
         ];
     }
