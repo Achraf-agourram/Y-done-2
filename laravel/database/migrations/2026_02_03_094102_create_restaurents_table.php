@@ -16,9 +16,11 @@ return new class extends Migration
             $table->string('restaurentName');
             $table->string('location');
             $table->integer('capacity');
-            $table->time('openingTime');
-            $table->time('closingTime');
-            $table->boolean('isActive');
+            $table->boolean('isActive')->default(true);
+            
+            $table->boolean('removed')->default(false);
+            $table->integer('remaining');
+
             $table->timestamps();
 
             $table->foreignId('owner_id')->constrained('users')->cascadeOnDelete();
