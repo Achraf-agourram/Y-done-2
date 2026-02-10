@@ -7,6 +7,8 @@ use Illuminate\Database\Seeder;
 use App\Models\Restaurent;
 use App\Models\User;
 use App\Models\Photo;
+use App\Models\Schedule;
+use App\Models\Day;
 
 class RestaurentSeeder extends Seeder
 {
@@ -21,6 +23,10 @@ class RestaurentSeeder extends Seeder
             Restaurent::factory()
                 ->count(1)
                 ->has(Photo::factory()->count(rand(2, 6)))
+                ->has(
+                    Schedule::factory()
+                        ->has(Day::factory()->count(rand(5, 7)))
+                    )
                 ->create([
                     'owner_id' => $owner->id,
                 ]);
