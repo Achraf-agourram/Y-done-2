@@ -22,7 +22,7 @@ class BookingFactory extends Factory
             'bookingDay' => now()->toDateString(),
             'tables' => $this->faker->numberBetween(1, 2),
             'startHour' => sprintf('%02d:00', $start),
-            'endHour' => sprintf('%02d:00', $start + 2),
+            'endHour' => sprintf('%02d:00', $start + 1),
             'restaurent_id' => null,
         ];
     }

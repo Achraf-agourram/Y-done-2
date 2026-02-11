@@ -20,7 +20,7 @@ class Day extends Model
         return $this->belongsTo(Schedule::class);
     }
 
-    public function getTimes ()
+    public function getTodayOpeningHours (): array
     {
         $times = [];
 
@@ -33,5 +33,17 @@ class Day extends Model
         }
 
         return $times;
+    }
+
+    public function getAvailableHours (): array
+    {
+        $availableHours = [];
+
+        foreach ($this->getTodayOpeningHours() as $hour)
+        {
+            if ($hour > date('H:i')) $availableHours[] = $hour;
+        }
+
+        return $availableHours;
     }
 }
