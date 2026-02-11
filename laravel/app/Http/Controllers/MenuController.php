@@ -38,11 +38,15 @@ class MenuController extends Controller
 
     public function restaurantMenu ($id)
     {
-        $restaurant = Restaurent::with(['menu.category.dishes'])->findOrFail($id);
+        $restaurant = Restaurent::with(['menu.category.dishes', 'schedule.days'])->findOrFail($id);
         $menu = $restaurant->menu;
 
         $selectedCategory = $menu->category->first();
         $menu->setRelation('category', $menu->category->slice(1));
+
+        $day = $restaurant->schedule->days->firstWhere('day', date('l'));
+
+        return $day->getTimes();
 
         return view('restaurantMenu', compact('restaurant', 'menu', 'selectedCategory'));
     }

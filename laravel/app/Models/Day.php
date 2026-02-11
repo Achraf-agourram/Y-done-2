@@ -19,4 +19,19 @@ class Day extends Model
     {
         return $this->belongsTo(Schedule::class);
     }
+
+    public function getTimes ()
+    {
+        $times = [];
+
+        $start = \Carbon\Carbon::createFromFormat('H:i:s', $this->opening);
+        $end   = \Carbon\Carbon::createFromFormat('H:i:s', $this->closing);
+
+        while ($start <= $end) {
+            $times[] = $start->format('H:i');
+            $start->addHour();
+        }
+
+        return $times;
+    }
 }

@@ -41,8 +41,6 @@ class RestaurentController extends Controller
             'restaurentName',
             'location',
             'capacity',
-            'openingTime',
-            'closingTime',
         ]));
         
         $restaurant->isActive = true;
