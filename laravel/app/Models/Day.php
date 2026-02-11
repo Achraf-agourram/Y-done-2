@@ -25,7 +25,7 @@ class Day extends Model
         $times = [];
 
         $start = \Carbon\Carbon::createFromFormat('H:i:s', $this->opening);
-        $end   = \Carbon\Carbon::createFromFormat('H:i:s', $this->closing);
+        $end   = \Carbon\Carbon::createFromFormat('H:i:s', $this->closing)->subHour();
 
         while ($start <= $end) {
             $times[] = $start->format('H:i');
