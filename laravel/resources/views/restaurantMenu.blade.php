@@ -70,12 +70,12 @@
                             <p class="text-orange-600 font-medium mb-8 italic">Secure your spot for a delightful meal.</p>
 
                             <div class="space-y-6">
-
+                                <input type="hidden" id="hourToBook" name="hourToBook">
                                 <div>
                                     <x-input-label value="Available Times (Today)" class="font-bold text-amber-900 ml-1 mb-3" />
                                     <div class="grid grid-cols-3 gap-3">
                                         @foreach($availableHoursToBook as $hour)
-                                            <button type="button" class="py-3 rounded-xl border border-orange-100 font-bold text-sm transition-all hover:bg-orange-500 hover:text-white focus:bg-orange-600 focus:text-white active:scale-95 shadow-sm">
+                                            <button type="button" class="py-3 rounded-xl border border-orange-100 font-bold text-sm transition-all hover:bg-orange-500 hover:text-white focus:bg-orange-600 focus:text-white active:scale-95 shadow-sm" onclick="setHour('{{ $hour }}')">
                                                 {{ $hour }}
                                             </button>
                                         @endforeach
@@ -109,13 +109,14 @@
                                 </div>
                             </div>
 
-                            <div class="space-y-4">
+                            <form action="/book" method="post" class="space-y-4">
+                                @csrf
                                 <p class="text-xs text-center text-gray-500 font-bold uppercase tracking-widest mb-2">Secure Checkout via</p>
                                 
                                 <button class="w-full bg-[#ffc439] hover:bg-[#f2ba36] transition-colors py-4 rounded-2xl shadow-md flex items-center justify-center">
                                     <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" class="h-6">
                                 </button>
-                            </div>
+                            </form>
                         </div>
 
                     </div>
@@ -160,5 +161,9 @@
 
             tableInput.addEventListener('input', updateSummary);
         });
+
+        function setHour(hour) {
+            document.getElementById('hourToBook').value = hour;
+        }
     </script>
 </x-app-layout>
