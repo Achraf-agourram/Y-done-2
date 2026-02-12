@@ -5,6 +5,7 @@ use App\Http\Controllers\DishController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RestaurentController;
+use App\Http\Controllers\BookingController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
@@ -18,6 +19,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/restaurant/menu/{id}/category/{category}', [MenuController::class, 'restaurantMenuCategory']);
     Route::post('/addCategory', [CategoryController::class, 'addCategory']);
     Route::post('/addDish', [DishController::class, 'addDish']);
+    Route::post('/book', [BookingController::class, 'addBooking']);
     Route::get('/profile', [ProfileController::class, 'edit']);
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
