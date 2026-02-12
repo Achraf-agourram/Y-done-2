@@ -39,14 +39,14 @@ class MenuController extends Controller
 
     public function restaurantMenu ($id)
     {
-        $restaurant = Restaurent::with(['menu.category.dishes', 'schedule.days'])->findOrFail($id);
+        $restaurant = Restaurent::with(['menu.category.dishes', 'schedule.days', 'bookings'])->findOrFail($id);
 
         $menu = $restaurant->menu;
         $selectedCategory = $menu->category->first();
         $menu->setRelation('category', $menu->category->slice(1));
 
         $todayOpeningTimes = $restaurant->schedule->days->firstWhere('day', date('l'))->getAvailableHours();
-        $availableHoursToBook = Booking::getHoursToBook($todayOpeningTimes, $restaurant->capacity);
+        $availableHoursToBook = Booking::getHoursToBook($todayOpeningTimes, $restaurant->capacity, $restaurant->id);
 
         return $availableHoursToBook;
 

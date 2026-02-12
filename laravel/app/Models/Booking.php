@@ -32,13 +32,13 @@ class Booking extends Model
         return $this->hasOne(Payment::class);
     }
 
-    public static function getHoursToBook (array $availableHours, int $capacity): array
+    public static function getHoursToBook (array $availableHours, int $capacity, int $id): array
     {
         $hoursToBook = [];
 
         foreach ($availableHours as $hour)
         {
-            if (self::where('startHour', Carbon::createFromFormat('H:i', $hour)->format('H:i:s'))->where('bookingDay', Carbon::today()->format('Y-m-d'))->count() < $capacity) $hoursToBook[] = $hour;
+            if (self::where('restaurent_id', $id)->where('startHour', Carbon::createFromFormat('H:i', $hour)->format('H:i:s'))->where('bookingDay', Carbon::today()->format('Y-m-d'))->count() < $capacity) $hoursToBook[] = $hour;
         }
 
         return $hoursToBook;
