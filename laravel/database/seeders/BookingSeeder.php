@@ -20,6 +20,7 @@ class BookingSeeder extends Seeder
         {
             Booking::factory()->count(10)->create([
                 'restaurent_id' => $restaurant->id,
+                'user_id' => 1,
             ]);
         }
     }

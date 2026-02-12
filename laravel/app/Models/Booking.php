@@ -32,6 +32,11 @@ class Booking extends Model
         return $this->hasOne(Payment::class);
     }
 
+    public function user ()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public static function getHoursToBook (array $availableHours, int $capacity, int $id): array
     {
         $hoursToBook = [];

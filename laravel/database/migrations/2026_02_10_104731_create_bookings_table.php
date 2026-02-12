@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreignId('restaurent_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
         });
     }
 

@@ -15,7 +15,6 @@ class Restaurent extends Model
         'capacity',
         'isActive',
         'removed',
-        'remaining',
     ];
 
     public function owner()

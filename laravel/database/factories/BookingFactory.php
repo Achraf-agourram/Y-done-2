@@ -24,6 +24,7 @@ class BookingFactory extends Factory
             'startHour' => sprintf('%02d:00', $start),
             'endHour' => sprintf('%02d:00', $start + 1),
             'restaurent_id' => null,
+            'user_id' => null,
         ];
     }
 }

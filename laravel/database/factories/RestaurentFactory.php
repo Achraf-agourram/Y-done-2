@@ -23,7 +23,6 @@ class RestaurentFactory extends Factory
             'restaurentName' => $this->faker->company,
             'location' => $this->faker->address,
             'capacity' => $capacity,
-            'remaining' => $capacity,
             'isActive' => true,
             'removed' => false,
             'owner_id' => null,
