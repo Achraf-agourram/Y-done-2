@@ -54,7 +54,6 @@ class MenuController extends Controller
             $todayOpeningTimes = [];
             $availableHoursToBook = [];
         }
-        
 
         return view('restaurantMenu', compact('restaurant', 'menu', 'selectedCategory', 'todayOpeningTimes', 'availableHoursToBook'));
     }
@@ -62,11 +61,20 @@ class MenuController extends Controller
     public function restaurantMenuCategory ($id, $category)
     {
         $restaurant = Restaurent::with(['menu.category.dishes'])->where('owner_id', auth()->id())->findOrFail($id);
-        $menu = $restaurant->menu;
 
+        $menu = $restaurant->menu;
         $selectedCategory = Category::with('dishes')->findOrFail($category);
         $menu->setRelation('category', $menu->category->where('id', '!=', $category));
 
-        return view('restaurantMenu', compact('restaurant', 'menu', 'selectedCategory'));
+        try {
+            $todayOpeningTimes = $restaurant->schedule->days->firstWhere('day', date('l'))->getAvailableHours();
+            $availableHoursToBook = Booking::getHoursToBook($todayOpeningTimes, $restaurant->capacity, $restaurant->id);
+
+        }catch (Throwable $er) {
+            $todayOpeningTimes = [];
+            $availableHoursToBook = [];
+        }
+
+        return view('restaurantMenu', compact('restaurant', 'menu', 'selectedCategory', 'todayOpeningTimes', 'availableHoursToBook'));
     }
 }
