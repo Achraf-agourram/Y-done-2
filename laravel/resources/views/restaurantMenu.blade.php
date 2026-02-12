@@ -83,7 +83,7 @@
 
                             <div>
                                 <x-input-label value="Number of tables" class="font-bold text-amber-900 ml-1 mb-2" />
-                                <input type="number" style="background-color: white !important; color: #111827 !important;"
+                                <input type="number" id="table-input" value="1" min="1" style="background-color: white !important; color: #111827 !important;"
                                         class="w-full border-orange-100 focus:border-orange-500 rounded-2xl py-3 shadow-sm appearance-none">
                                 </input>
                             </div>
@@ -96,15 +96,15 @@
                         <div class="space-y-4 mb-8">
                             <div class="flex justify-between text-amber-900 font-medium">
                                 <span>Reservation Fee</span>
-                                <span>$100.00</span>
+                                <span>$<span id="summary-fee">20.00</span></span>
                             </div>
                             <div class="flex justify-between text-amber-900 font-medium">
                                 <span>Tables amount</span>
-                                <span>2</span>
+                                <span id="summary-amount">2</span>
                             </div>
                             <div class="border-t border-orange-200 pt-4 flex justify-between text-xl font-black text-amber-950">
                                 <span>Total Deposit</span>
-                                <span class="text-orange-600">$200.00</span>
+                                <span class="text-orange-600">$<span id="summary-total">20.00</span></span>
                             </div>
                         </div>
 
@@ -121,4 +121,28 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tableInput = document.getElementById('table-input');
+            const summaryFee = document.getElementById('summary-fee');
+            const summaryAmount = document.getElementById('summary-amount');
+            const summaryTotal = document.getElementById('summary-total');
+
+            const baseFeePerTable = 20.00;
+
+            function updateSummary() {
+                let count = parseInt(tableInput.value);
+                if (isNaN(count) || count < 1) count = 1;
+
+                const totalFee = (count * baseFeePerTable).toFixed(2);
+
+                summaryAmount.innerText = count;
+                summaryTotal.innerText = totalFee;
+        
+            }
+
+            tableInput.addEventListener('input', updateSummary);
+        });
+    </script>
 </x-app-layout>
