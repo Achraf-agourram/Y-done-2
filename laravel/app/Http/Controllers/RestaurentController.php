@@ -44,7 +44,6 @@ class RestaurentController extends Controller
         ]));
         
         $restaurant->isActive = true;
-        $restaurant->remaining = $restaurant->capacity;
         $restaurant->owner_id = Auth::id();
 
         $restaurant->save();
