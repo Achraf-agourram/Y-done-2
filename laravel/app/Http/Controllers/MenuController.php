@@ -7,6 +7,7 @@ use App\Models\Booking;
 use App\Models\Restaurent;
 use Exception;
 use Illuminate\Http\Request;
+use Throwable;
 
 class MenuController extends Controller
 {
@@ -45,12 +46,17 @@ class MenuController extends Controller
         $selectedCategory = $menu->category->first();
         $menu->setRelation('category', $menu->category->slice(1));
 
-        $todayOpeningTimes = $restaurant->schedule->days->firstWhere('day', date('l'))->getAvailableHours();
-        $availableHoursToBook = Booking::getHoursToBook($todayOpeningTimes, $restaurant->capacity, $restaurant->id);
+        try {
+            $todayOpeningTimes = $restaurant->schedule->days->firstWhere('day', date('l'))->getAvailableHours();
+            $availableHoursToBook = Booking::getHoursToBook($todayOpeningTimes, $restaurant->capacity, $restaurant->id);
 
-        return $availableHoursToBook;
+        }catch (Throwable $er) {
+            $todayOpeningTimes = [];
+            $availableHoursToBook = [];
+        }
+        
 
-        //return view('restaurantMenu', compact('restaurant', 'menu', 'selectedCategory'));
+        return view('restaurantMenu', compact('restaurant', 'menu', 'selectedCategory', 'todayOpeningTimes', 'availableHoursToBook'));
     }
 
     public function restaurantMenuCategory ($id, $category)

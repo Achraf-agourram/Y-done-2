@@ -73,9 +73,9 @@
                             <div>
                                 <x-input-label value="Available Times (Today)" class="font-bold text-amber-900 ml-1 mb-3" />
                                 <div class="grid grid-cols-3 gap-3">
-                                    @foreach(['12:00', '13:30', '18:00', '19:30', '21:00', '22:00'] as $time)
+                                    @foreach($availableHoursToBook as $hour)
                                         <button type="button" class="py-3 rounded-xl border border-orange-100 font-bold text-sm transition-all hover:bg-orange-500 hover:text-white focus:bg-orange-600 focus:text-white active:scale-95 shadow-sm">
-                                            {{ $time }}
+                                            {{ $hour }}
                                         </button>
                                     @endforeach
                                 </div>
