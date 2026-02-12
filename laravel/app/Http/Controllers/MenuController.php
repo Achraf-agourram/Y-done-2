@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Booking;
 use App\Models\Restaurent;
 use Exception;
 use Illuminate\Http\Request;
@@ -45,8 +46,9 @@ class MenuController extends Controller
         $menu->setRelation('category', $menu->category->slice(1));
 
         $todayOpeningTimes = $restaurant->schedule->days->firstWhere('day', date('l'))->getAvailableHours();
+        $availableHoursToBook = Booking::getHoursToBook($todayOpeningTimes, $restaurant->capacity);
 
-        return $todayOpeningTimes;
+        return $availableHoursToBook;
 
         //return view('restaurantMenu', compact('restaurant', 'menu', 'selectedCategory'));
     }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Day extends Model
 {
@@ -24,8 +25,8 @@ class Day extends Model
     {
         $times = [];
 
-        $start = \Carbon\Carbon::createFromFormat('H:i:s', $this->opening);
-        $end   = \Carbon\Carbon::createFromFormat('H:i:s', $this->closing)->subHour();
+        $start = Carbon::createFromFormat('H:i:s', $this->opening);
+        $end   = Carbon::createFromFormat('H:i:s', $this->closing)->subHour();
 
         while ($start <= $end) {
             $times[] = $start->format('H:i');
