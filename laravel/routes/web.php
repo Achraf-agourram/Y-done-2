@@ -6,6 +6,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RestaurentController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
@@ -20,6 +21,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/addCategory', [CategoryController::class, 'addCategory']);
     Route::post('/addDish', [DishController::class, 'addDish']);
     Route::post('/book', [BookingController::class, 'addBooking']);
+    Route::post('/paypal/create', [PaymentController::class, 'create']);
+    Route::post('/paypal/capture/{orderId}', [PaymentController::class, 'capture']);
     Route::get('/profile', [ProfileController::class, 'edit']);
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
