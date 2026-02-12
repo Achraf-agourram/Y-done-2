@@ -60,66 +60,82 @@
             </div>
         </div>
 
-        <div class="max-w-6xl mx-auto mt-16 px-4">
-            <div class="bg-white/80 backdrop-blur-sm border border-white shadow-2xl rounded-[2.5rem] overflow-hidden">
-                <div class="grid grid-cols-1 lg:grid-cols-2">
-                    
-                    <div class="p-8 md:p-12 border-b lg:border-b-0 lg:border-r border-orange-100">
-                        <h3 class="text-3xl font-black text-amber-950 mb-2">Book a Table 🍷</h3>
-                        <p class="text-orange-600 font-medium mb-8 italic">Secure your spot for a delightful meal.</p>
+        @if ($todayOpeningTimes)
+            <div class="max-w-6xl mx-auto mt-16 px-4">
+                <div class="bg-white/80 backdrop-blur-sm border border-white shadow-2xl rounded-[2.5rem] overflow-hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2">
+                        
+                        <div class="p-8 md:p-12 border-b lg:border-b-0 lg:border-r border-orange-100">
+                            <h3 class="text-3xl font-black text-amber-950 mb-2">Book a Table 🍷</h3>
+                            <p class="text-orange-600 font-medium mb-8 italic">Secure your spot for a delightful meal.</p>
 
-                        <div class="space-y-6">
+                            <div class="space-y-6">
 
-                            <div>
-                                <x-input-label value="Available Times (Today)" class="font-bold text-amber-900 ml-1 mb-3" />
-                                <div class="grid grid-cols-3 gap-3">
-                                    @foreach($availableHoursToBook as $hour)
-                                        <button type="button" class="py-3 rounded-xl border border-orange-100 font-bold text-sm transition-all hover:bg-orange-500 hover:text-white focus:bg-orange-600 focus:text-white active:scale-95 shadow-sm">
-                                            {{ $hour }}
-                                        </button>
-                                    @endforeach
+                                <div>
+                                    <x-input-label value="Available Times (Today)" class="font-bold text-amber-900 ml-1 mb-3" />
+                                    <div class="grid grid-cols-3 gap-3">
+                                        @foreach($availableHoursToBook as $hour)
+                                            <button type="button" class="py-3 rounded-xl border border-orange-100 font-bold text-sm transition-all hover:bg-orange-500 hover:text-white focus:bg-orange-600 focus:text-white active:scale-95 shadow-sm">
+                                                {{ $hour }}
+                                            </button>
+                                        @endforeach
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <x-input-label value="Number of tables" class="font-bold text-amber-900 ml-1 mb-2" />
+                                    <input type="number" id="table-input" value="1" min="1" style="background-color: white !important; color: #111827 !important;"
+                                            class="w-full border-orange-100 focus:border-orange-500 rounded-2xl py-3 shadow-sm appearance-none">
+                                    </input>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-8 md:p-12 bg-orange-50/50">
+                            <h3 class="text-2xl font-black text-amber-950 mb-6">Reservation Summary</h3>
+                            
+                            <div class="space-y-4 mb-8">
+                                <div class="flex justify-between text-amber-900 font-medium">
+                                    <span>Reservation Fee</span>
+                                    <span>$<span id="summary-fee">20.00</span></span>
+                                </div>
+                                <div class="flex justify-between text-amber-900 font-medium">
+                                    <span>Tables amount</span>
+                                    <span id="summary-amount">2</span>
+                                </div>
+                                <div class="border-t border-orange-200 pt-4 flex justify-between text-xl font-black text-amber-950">
+                                    <span>Total Deposit</span>
+                                    <span class="text-orange-600">$<span id="summary-total">20.00</span></span>
                                 </div>
                             </div>
 
-                            <div>
-                                <x-input-label value="Number of tables" class="font-bold text-amber-900 ml-1 mb-2" />
-                                <input type="number" id="table-input" value="1" min="1" style="background-color: white !important; color: #111827 !important;"
-                                        class="w-full border-orange-100 focus:border-orange-500 rounded-2xl py-3 shadow-sm appearance-none">
-                                </input>
+                            <div class="space-y-4">
+                                <p class="text-xs text-center text-gray-500 font-bold uppercase tracking-widest mb-2">Secure Checkout via</p>
+                                
+                                <button class="w-full bg-[#ffc439] hover:bg-[#f2ba36] transition-colors py-4 rounded-2xl shadow-md flex items-center justify-center">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" class="h-6">
+                                </button>
                             </div>
                         </div>
+
                     </div>
-
-                    <div class="p-8 md:p-12 bg-orange-50/50">
-                        <h3 class="text-2xl font-black text-amber-950 mb-6">Reservation Summary</h3>
-                        
-                        <div class="space-y-4 mb-8">
-                            <div class="flex justify-between text-amber-900 font-medium">
-                                <span>Reservation Fee</span>
-                                <span>$<span id="summary-fee">20.00</span></span>
-                            </div>
-                            <div class="flex justify-between text-amber-900 font-medium">
-                                <span>Tables amount</span>
-                                <span id="summary-amount">2</span>
-                            </div>
-                            <div class="border-t border-orange-200 pt-4 flex justify-between text-xl font-black text-amber-950">
-                                <span>Total Deposit</span>
-                                <span class="text-orange-600">$<span id="summary-total">20.00</span></span>
-                            </div>
-                        </div>
-
-                        <div class="space-y-4">
-                            <p class="text-xs text-center text-gray-500 font-bold uppercase tracking-widest mb-2">Secure Checkout via</p>
-                            
-                            <button class="w-full bg-[#ffc439] hover:bg-[#f2ba36] transition-colors py-4 rounded-2xl shadow-md flex items-center justify-center">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" class="h-6">
-                            </button>
-                        </div>
-                    </div>
-
                 </div>
             </div>
-        </div>
+        @else
+            <div class="max-w-6xl mx-auto mb-8">
+                <div class="bg-amber-50 border border-orange-200 rounded-[2rem] p-6 flex items-center shadow-sm">
+                    <div class="bg-white p-3 rounded-full shadow-inner mr-5">
+                        <span class="text-2xl">😴</span>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-black text-amber-950">This restaurant is closed today</h4>
+                        <p class="text-orange-800/80 font-medium italic text-sm">
+                            The chef is resting! Check back tomorrow.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
 
     <script>
