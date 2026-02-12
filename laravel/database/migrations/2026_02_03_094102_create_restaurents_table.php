@@ -17,9 +17,7 @@ return new class extends Migration
             $table->string('location');
             $table->integer('capacity');
             $table->boolean('isActive')->default(true);
-            
             $table->boolean('removed')->default(false);
-            $table->integer('remaining');
 
             $table->timestamps();
 
