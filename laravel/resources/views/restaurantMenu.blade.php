@@ -112,9 +112,7 @@
 
                             <div class="space-y-4">
                                 <p class="text-xs text-center text-gray-500 font-bold uppercase tracking-widest mb-2">Secure Checkout via</p>
-                                <button class="w-full bg-[#ffc439] hover:bg-[#f2ba36] transition-colors py-4 rounded-2xl shadow-md flex items-center justify-center">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" class="h-6">
-                                </button>
+                                <div id="paypal-button-container"></div>
                             </div>
                         </div>
 
@@ -138,7 +136,28 @@
         @endif
     </div>
 
+    <script src="https://www.paypal.com/sdk/js?client-id=AajEVulGxcMHFrbPFBRCanzZs5Y7-jC_V_But3EU_OB6IFO2D_4xAJmJumXCgRGe7gQM4LyuSpLzR60V&currency=USD&disable-funding=card"></script>
     <script>
+        paypal.Buttons({
+            createOrder: function(data, actions) {
+                return fetch('/paypal/create', {
+                    method: 'post'
+                })
+                .then(res => res.json())
+                .then(data => data.id);
+            },
+
+            onApprove: function(data, actions) {
+                return fetch('/paypal/capture/' + data.orderID, {
+                    method: 'post'
+                })
+                .then(res => res.json())
+                .then(details => {
+                    alert('Payment successful!');
+                });
+            }
+        }).render('#paypal-button-container');
+
         document.addEventListener('DOMContentLoaded', function () {
             const tableInput = document.getElementById('table-input');
             const summaryFee = document.getElementById('summary-fee');
