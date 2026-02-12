@@ -61,7 +61,7 @@
         </div>
 
         @if ($todayOpeningTimes)
-            <form action="/book" method="post" class="max-w-6xl mx-auto mt-16 px-4">
+            <form action="/paypal/create" method="post" class="max-w-6xl mx-auto mt-16 px-4">
                 @csrf
                 <div class="bg-white/80 backdrop-blur-sm border border-white shadow-2xl rounded-[2.5rem] overflow-hidden">
                     <div class="grid grid-cols-1 lg:grid-cols-2">
@@ -154,15 +154,19 @@
                 return fetch('/paypal/capture/' + data.orderID, {
                     method: 'POST',
                     headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
                     }
                 })
                 .then(res => res.json())
                 .then(details => {
 
+                    console.log(details);
+
                     if (details.success) {
                         alert('Payment successful 🎉');
-                        window.location.href = "/success-page";
+                    } else {
+                        alert('Payment failed');
                     }
                 });
             },

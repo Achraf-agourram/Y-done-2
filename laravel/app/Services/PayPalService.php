@@ -11,9 +11,10 @@ class PayPalService
         $response = Http::withBasicAuth(
             config('services.paypal.client_id'),
             config('services.paypal.secret')
-        )->asForm()->post(config('services.paypal.base_url') . '/v1/oauth2/token', [
-            'grant_type' => 'client_credentials'
-        ]);
+        )->asForm()->post(
+            config('services.paypal.base_url') . '/v1/oauth2/token',
+            ['grant_type' => 'client_credentials']
+        );
 
         return $response->json()['access_token'];
     }
@@ -28,7 +29,7 @@ class PayPalService
                 "purchase_units" => [[
                     "amount" => [
                         "currency_code" => "USD",
-                        "value" => $amount
+                        "value" => number_format($amount, 2, '.', '')
                     ]
                 ]]
             ]);
