@@ -141,7 +141,10 @@
         paypal.Buttons({
             createOrder: function(data, actions) {
                 return fetch('/paypal/create', {
-                    method: 'post'
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
                 })
                 .then(res => res.json())
                 .then(data => data.id);
@@ -149,13 +152,26 @@
 
             onApprove: function(data, actions) {
                 return fetch('/paypal/capture/' + data.orderID, {
-                    method: 'post'
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
                 })
                 .then(res => res.json())
                 .then(details => {
-                    alert('Payment successful!');
+
+                    if (details.success) {
+                        alert('Payment successful 🎉');
+                        window.location.href = "/success-page";
+                    }
                 });
+            },
+
+            onError: function(err) {
+                alert("Payment failed");
+                console.log(err);
             }
+
         }).render('#paypal-button-container');
 
         document.addEventListener('DOMContentLoaded', function () {
