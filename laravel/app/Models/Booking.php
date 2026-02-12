@@ -38,7 +38,7 @@ class Booking extends Model
 
         foreach ($availableHours as $hour)
         {
-            if (self::where('startHour', Carbon::createFromFormat('H:i', $hour)->format('H:i:s'))->where('bookingDay', )->count() < $capacity) $hoursToBook[] = $hour;
+            if (self::where('startHour', Carbon::createFromFormat('H:i', $hour)->format('H:i:s'))->where('bookingDay', Carbon::today()->format('Y-m-d'))->count() < $capacity) $hoursToBook[] = $hour;
         }
 
         return $hoursToBook;
