@@ -23,17 +23,29 @@ class PayPalService
     {
         $accessToken = $this->getAccessToken();
 
-        $response = Http::withToken($accessToken)
-            ->post(config('services.paypal.base_url') . '/v2/checkout/orders', [
-                "intent" => "CAPTURE",
-                "purchase_units" => [[
+        $url = config('services.paypal.base_url') . '/v2/checkout/orders';
+
+        $body = [
+            "intent" => "CAPTURE",
+            "purchase_units" => [
+                [
                     "amount" => [
                         "currency_code" => "USD",
                         "value" => number_format($amount, 2, '.', '')
                     ]
-                ]]
-            ]);
+                ]
+            ]
+        ];
 
+        $response = Http::withToken($accessToken)
+            ->withHeaders([
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ])
+            ->send('POST', $url, [
+                'body' => json_encode($body)
+            ]);
+        
         return $response->json();
     }
 
@@ -42,7 +54,9 @@ class PayPalService
         $accessToken = $this->getAccessToken();
 
         $response = Http::withToken($accessToken)
-            ->post(config('services.paypal.base_url') . "/v2/checkout/orders/{$orderId}/capture");
+            ->post(
+                config('services.paypal.base_url') . "/v2/checkout/orders/{$orderId}/capture"
+            );
 
         return $response->json();
     }

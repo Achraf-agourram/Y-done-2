@@ -9,25 +9,15 @@ class PaymentController extends Controller
 {
     public function create(PayPalService $paypal)
     {
-        $order = $paypal->createOrder(20);
+        $response = $paypal->createOrder(20);
 
-        return response()->json([
-            'id' => $order['id']
-        ]);
+        return response()->json($response);
     }
 
     public function capture($orderId, PayPalService $paypal)
     {
-        $capture = $paypal->captureOrder($orderId);
+        $response = $paypal->captureOrder($orderId);
 
-        if ($capture['status'] === 'COMPLETED') {
-            return response()->json([
-                'success' => true
-            ]);
-        }
-
-        return response()->json([
-            'success' => false
-        ], 400);
+        return response()->json($response);
     }
 }

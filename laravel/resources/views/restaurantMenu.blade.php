@@ -156,7 +156,10 @@
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                         'Accept': 'application/json'
-                    }
+                    },
+                    body: JSON.stringify({
+                        orderID: data.orderID
+                    })
                 })
                 .then(res => res.json())
                 .then(details => {
