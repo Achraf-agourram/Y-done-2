@@ -139,18 +139,23 @@
     <script src="https://www.paypal.com/sdk/js?client-id=AajEVulGxcMHFrbPFBRCanzZs5Y7-jC_V_But3EU_OB6IFO2D_4xAJmJumXCgRGe7gQM4LyuSpLzR60V&currency=USD&disable-funding=card"></script>
     <script>
         paypal.Buttons({
-            createOrder: function(data, actions) {
+            createOrder: function () {
                 return fetch('/paypal/create', {
                     method: 'POST',
                     headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
                     }
                 })
                 .then(res => res.json())
-                .then(data => data.id);
+                .then(order => {
+                    console.log("Create response:", order);
+                    return order.id;
+                });
             },
 
-            onApprove: function(data, actions) {
+            onApprove: function (data) {
+
                 return fetch('/paypal/capture/' + data.orderID, {
                     method: 'POST',
                     headers: {
@@ -158,26 +163,27 @@
                         'Accept': 'application/json'
                     }
                 })
-                .then(response => response.json())
+                .then(res => res.json())
                 .then(details => {
 
+                    console.log("Capture response:", details);
+
                     if (details.status === "COMPLETED") {
-                        alert("Payment successful ✅");
+                        alert("✅ Payment successful");
                     } else {
-                        alert("Payment not completed");
+                        alert("❌ Payment not completed");
                     }
 
-                    return details;
                 })
-                .catch(error => {
-                    console.error(error);
-                    alert("Payment failed ❌");
+                .catch(err => {
+                    console.error("Capture error:", err);
+                    alert("❌ Payment failed");
                 });
             },
 
-            onError: function(err) {
-                alert("Payment failed");
-                console.log(err);
+            onError: function (err) {
+                console.error("PayPal error:", err);
+                alert("❌ PayPal error");
             }
 
         }).render('#paypal-button-container');

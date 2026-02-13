@@ -6,46 +6,44 @@ use Illuminate\Support\Facades\Http;
 
 class PayPalService
 {
+    private $baseUrl;
+
+    public function __construct()
+    {
+        $this->baseUrl = config('services.paypal.base_url');
+    }
+
     public function getAccessToken()
     {
         $response = Http::withBasicAuth(
-            config('services.paypal.client_id'),
-            config('services.paypal.secret')
-        )->asForm()->post(
-            config('services.paypal.base_url') . '/v1/oauth2/token',
-            ['grant_type' => 'client_credentials']
-        );
+                config('services.paypal.client_id'),
+                config('services.paypal.secret')
+            )
+            ->asForm()
+            ->post($this->baseUrl . '/v1/oauth2/token', [
+                'grant_type' => 'client_credentials'
+            ]);
 
         return $response->json()['access_token'];
     }
 
-    public function createOrder($amount)
+    public function createOrder($amount = 10.00)
     {
         $accessToken = $this->getAccessToken();
 
-        $url = config('services.paypal.base_url') . '/v2/checkout/orders';
-
-        $body = [
-            "intent" => "CAPTURE",
-            "purchase_units" => [
-                [
-                    "amount" => [
-                        "currency_code" => "USD",
-                        "value" => number_format($amount, 2, '.', '')
+        $response = Http::withToken($accessToken)
+            ->post($this->baseUrl . '/v2/checkout/orders', [
+                "intent" => "CAPTURE",
+                "purchase_units" => [
+                    [
+                        "amount" => [
+                            "currency_code" => "USD",
+                            "value" => number_format($amount, 2, '.', '')
+                        ]
                     ]
                 ]
-            ]
-        ];
-
-        $response = Http::withToken($accessToken)
-            ->withHeaders([
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
-            ])
-            ->send('POST', $url, [
-                'body' => json_encode($body)
             ]);
-        
+
         return $response->json();
     }
 
@@ -53,10 +51,14 @@ class PayPalService
     {
         $accessToken = $this->getAccessToken();
 
+        $url = $this->baseUrl . "/v2/checkout/orders/{$orderId}/capture";
+
         $response = Http::withToken($accessToken)
-            ->post(
-                config('services.paypal.base_url') . "/v2/checkout/orders/{$orderId}/capture"
-            );
+            ->withHeaders([
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ])
+            ->send('POST', $url);
 
         return $response->json();
     }
