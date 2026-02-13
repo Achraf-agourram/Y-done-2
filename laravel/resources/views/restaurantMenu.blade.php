@@ -156,21 +156,22 @@
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                         'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        orderID: data.orderID
-                    })
+                    }
                 })
-                .then(res => res.json())
+                .then(response => response.json())
                 .then(details => {
 
-                    console.log(details);
-
-                    if (details.success) {
-                        alert('Payment successful 🎉');
+                    if (details.status === "COMPLETED") {
+                        alert("Payment successful ✅");
                     } else {
-                        alert('Payment failed');
+                        alert("Payment not completed");
                     }
+
+                    return details;
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("Payment failed ❌");
                 });
             },
 
